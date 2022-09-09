@@ -1,28 +1,27 @@
-import "./App.css";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const data = [
   { id: 1, name: "Alabama" },
   { id: 2, name: "Alaska" },
 ];
-
-function App() {
+const App = () => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    const filter = data.filter((item) => {
+    const filter = data.filter((item) =>
       item.name
         ?.toLowerCase()
-        ?.startsWith(selectedValues[selectedValues.length - 1]?.toLowerCase());
-    });
+        ?.startsWith(selectedValues[selectedValues.length - 1]?.toLowerCase())
+    );
     setFilteredData(filter || []);
   }, [selectedValues]);
 
   return (
-    <div className="App">
+    <div>
       <input
         value={selectedValues}
+        // multiple={true}
         onChange={(e) => {
           console.log(e.target.value);
           setSelectedValues(e.target.value.split(","));
@@ -30,20 +29,21 @@ function App() {
       />
       <button
         onClick={() => {
-          setSelectedValues([...selectedValues, "TEST"]);
+          setSelectedValues([...selectedValues, "TEST "]);
         }}
       >
-        Submit
+        submit
       </button>
       <ul>
         {filteredData?.map((item) => (
           <li
-            onClick={(e) => {
+            key={item.id}
+            onClick={(e) =>
               setSelectedValues((oldValue) => [
                 ...oldValue.slice(0, -1),
                 item.name + ",",
-              ]);
-            }}
+              ])
+            }
           >
             {item.name}
           </li>
@@ -51,6 +51,6 @@ function App() {
       </ul>
     </div>
   );
-}
+};
 
 export default App;
